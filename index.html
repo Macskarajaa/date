@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        span {
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #f0f0f0;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        button {
+            background-color: lightcyan;
+            color: blue;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 10px 0;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+    </style>
+
+    <div class="container">
+       <div class="flex wrap justify-center gap-7 text-xl"></div> 
+        <span>
+            <input type="radio" name="duration" id="" value="h45" checked>
+                <label for="h40">45'</label>
+        </span>
+        <span>
+            <input type="radio" name="duration" id="" value="h40">
+                <label for="h40">40'</label>
+        </span>
+        <span>
+            <input type="radio" name="duration" id="" value="h35">
+                <label for="h40">35'</label>
+        </span>
+        
+        <h1></h1>
+        <div class="info"></div>
+        <button onclick="refresh()">refresh</button> 
+    </div>
+   
+    <script src="data_radio.js"></script>
+    <script>
+        let bellShedule = []
+
+        
+        function refresh() {
+            let selectedValue = document.querySelector('input[name="duration"]:checked').value 
+            console.log(selectedValue);
+            bellShedule=bellShedules[selectedValue]
+            console.log(bellShedule);
+            let currentTimeString = getCurrentTimeString()
+            document.querySelector('h1').innerHTML = currentTimeString
+            console.log(currentTimeString);
+            let current=bellShedule.find(obj=>obj.from<=currentTimeString && obj.to>=currentTimeString)
+            if(current) {
+                document.querySelector('.info').innerHTML=`Most a(z) ${current.id}.óra van és ${current.to}-ig tart.`
+            }else{
+                let next = bellShedule.find(obj=>obj.from>currentTimeString)
+                if(next)
+                document.querySelector('.info').innerHTML=`Most szünet van és a/az ${next.id}.óra következik, ${next.from}-tól.`
+                else
+                    document.querySelector('.info').innerHTML=`nincs információ...`;
+            }
+        }
+
+        function getCurrentTimeString() {
+            let now = new Date()
+            let h = now.getHours().toString().padStart(2,'0')
+            let m = now.getMinutes(2,'0')
+
+            console.log(h,m);
+            return h + ':' + m
+
+        }
+
+    </script>
+</body>
+</html>
